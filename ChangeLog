@@ -1,3 +1,8 @@
+2011-12-23  Ulrich Drepper  <drepper@gmail.com>
+
+	* include/features.h: Handle __STDC_VERSION__ >= 201112 and
+	_ISOC11_SOURCE.
+
 2011-04-01  Andreas Schwab  <schwab@redhat.com>
 
 	* sysdeps/unix/sysv/linux/Makefile (sysdep_headers): Add
