@@ -22,6 +22,7 @@
 #include <unwind.h>
 #include <libgcc_s.h>
 
+__attribute__((__used__))
 static void (*libgcc_s_resume) (struct _Unwind_Exception *exc);
 static _Unwind_Reason_Code (*libgcc_s_personality)
   (int, _Unwind_Action, _Unwind_Exception_Class, struct _Unwind_Exception *,
