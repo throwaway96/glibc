@@ -210,8 +210,13 @@ include SUPPORTED
 INSTALL-SUPPORTED-LOCALES=$(addprefix install-, $(SUPPORTED-LOCALES))
 
 # Sometimes the whole collection of locale files should be installed.
+ifeq ($(cross-compiling),no)
 LOCALEDEF=I18NPATH=. GCONV_PATH=$(common-objpfx)iconvdata LC_ALL=C \
 $(common-objpfx)elf/ld.so --library-path $(rpath-link) $(common-objpfx)locale/localedef
+else
+LOCALEDEF=I18NPATH=. GCONV_PATH=$(common-objpfx)iconvdata LC_ALL=C \
+$(common-objpfx)locale/localedef-native
+endif
 install-locales: $(INSTALL-SUPPORTED-LOCALES)
 
 install-locales-dir:

@@ -56,6 +56,9 @@ distribute	= gconv_builtin.h gconv_int.h loop.c skeleton.c iconv_prog.h \
 		  iconvconfig.h
 
 others		= iconv_prog iconvconfig
+ifneq ($(cross-compiling),no)
+  others-native  = iconvconfig-native
+endif
 install-others-programs	= $(inst_bindir)/iconv
 install-sbin	= iconvconfig
 
@@ -78,6 +81,7 @@ $(inst_bindir)/iconv: $(objpfx)iconv_prog $(+force)
 
 $(objpfx)iconv_prog: $(iconv_prog-modules:%=$(objpfx)%.o)
 $(objpfx)iconvconfig: $(iconvconfig-modules:%=$(objpfx)%.o)
+$(objpfx)iconvconfig-native: $(iconvconfig-modules:%=$(objpfx)%-native.o)
 
 ifneq ($(cross-compiling),yes)
 xtests: test-iconvconfig

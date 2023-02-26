@@ -28,6 +28,9 @@ distribute := tzfile.h private.h scheck.c ialloc.c yearistype	\
 extra-objs := scheck.o ialloc.o
 
 others	:= zdump zic
+ifneq ($(cross-compiling),no)
+others-native := zic-native
+endif
 tests	:= test-tz tst-timezone
 
 tzbases := africa antarctica asia australasia europe northamerica \
@@ -69,13 +72,10 @@ installed-posixrules-file := $(firstword $(filter /%,$(posixrules-file)) \
 					 $(addprefix $(inst_zonedir)/, \
 						     $(posixrules-file)))
 
-ifeq ($(cross-compiling),no)
-# Don't try to install the zoneinfo files since we can't run zic.
 install-others = $(addprefix $(inst_zonedir)/,$(zonenames) \
 					      $(zonenames:%=posix/%) \
 					      $(zonenames:%=right/%)) \
 		 $(installed-localtime-file) $(installed-posixrules-file)
-endif
 
 ifeq ($(have-ksh),yes)
 install-others += $(inst_zonedir)/iso3166.tab $(inst_zonedir)/zone.tab
@@ -128,7 +128,11 @@ echo-zonenames:
 # We have to use `-d $(inst_zonedir)' to explictly tell zic where to
 # place the output files although $(zonedir) is compiled in.  But the
 # user might have set $(install_root) on the command line of `make install'.
+ifeq ($(cross-compiling),no)
 zic-cmd = $(built-program-cmd) -d $(inst_zonedir)
+else
+zic-cmd = $(common-objpfx)/timezone/zic-native -d $(inst_zonedir)
+endif
 tzcompile = $(zic-cmd)$(target-zone-flavor) -L $(word 3,$^) \
 	    -y $(dir $(word 4,$^))$(notdir $(word 4,$^)) $<
 
@@ -158,8 +162,10 @@ $(installed-posixrules-file): $(inst_zonedir)/$(posixrules) $(objpfx)zic \
 	$(zic-cmd) -p $(posixrules)
 endif
 
-
 $(objpfx)zic: $(objpfx)scheck.o $(objpfx)ialloc.o
+ifneq ($(cross-compiling),no)
+$(objpfx)zic-native:  $(objpfx)scheck-native.o $(objpfx)ialloc-native.o
+endif
 
 tz-cflags = -DTZDIR='"$(zonedir)"' \
 	    -DTZDEFAULT='"$(localtime-file)"' \

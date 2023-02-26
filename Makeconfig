@@ -467,6 +467,13 @@ ifndef +link-static
 			   $(common-objpfx)libc% $(+postinit),$^) \
 	      $(link-extra-libs-static) $(link-libc-static) $(+postctor) $(+postinit)
 endif
+# Command for linking programs against the host system.
+ifndef +link-native
++link-native = $(BUILD_CC) -static -g -o $@ $^ \
+              $(LDFLAGS) $(LDFLAGS-$(@F)) \
+              $(combreloc-LDFLAGS) $(relro-LDFLAGS) \
+              $(link-extra-libs)
+endif
 # Command for statically linking bounded-pointer programs with the C library.
 ifndef +link-bounded
 +link-bounded = $(CC) -nostdlib -nostartfiles -static -fbounded-pointers -o $@ \
@@ -683,6 +690,8 @@ endif	# $(+cflags) == ""
 	    $(+sysdep-includes) $(includes) \
 	    $(patsubst %/,-I%,$(..)) $(libio-include) -I. $(sysincludes)
 
++includes-native = -I$(..)include-native -I$(objpfx) -I.
+
 # Since libio has several internal header files, we use a -I instead
 # of many little headers in the include directory.
 libio-include = -I$(..)libio
@@ -697,10 +706,15 @@ CPPFLAGS = $($(subdir)-CPPFLAGS) $(+includes) $(defines) \
 	   $(foreach lib,$(libof-$(basename $(@F))) \
 			 $(libof-$(<F)) $(libof-$(@F)),$(CPPFLAGS-$(lib))) \
 	   $(CPPFLAGS-$(<F)) $(CPPFLAGS-$(@F)) $(CPPFLAGS-$(basename $(@F)))
+CPPFLAGS-native = -D_GNU_SOURCE $($(subdir)-CPPFLAGS) $(+includes-native) $(defines) \
+		  $(CPPFLAGS-$(suffix $@)) -include $(..)include/libc-symbols.h \
+		  $(CPPFLAGS-$(<F)) $(CPPFLAGS-$(@F)) $(CPPFLAGS-$(basename $(@F)))
 override CFLAGS	= -std=gnu99 $(gnu89-inline-CFLAGS) \
 		  $(filter-out %frame-pointer,$(+cflags)) $(+gccwarn-c) \
 		  $(sysdep-CFLAGS) $(CFLAGS-$(suffix $@)) $(CFLAGS-$(<F)) \
 		  $(CFLAGS-$(@F))
+override CFLAGS-native = -std=gnu99 $(gnu89-inline-CFLAGS) $(default_cflags) $(+gccwarn-c) \
+			 $(CFLAGS-$(suffix $@)) $(CFLAGS-$(<F)) $(CFLAGS-$(@F))
 override CXXFLAGS = $(c++-sysincludes) \
 		    $(filter-out %frame-pointer,$(+cflags)) $(sysdep-CFLAGS) \
 		    $(CFLAGS-$(suffix $@)) $(CFLAGS-$(<F)) $(CFLAGS-$(@F))

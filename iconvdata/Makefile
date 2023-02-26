@@ -321,23 +321,25 @@ $(objpfx)iso8859-7jp.stmp: $(charmaps)/ISO-8859-7 gen-8bit-gap-1.sh
 
 headers: $(addprefix $(objpfx), $(generated-modules:=.h))
 
+ifeq ($(cross-compiling),no)
+iconvconfig-cmd = LC_ALL=C LANGUAGE=C \
+  $(common-objpfx)elf/ld.so --library-path $(rpath-link) \
+  $(common-objpfx)iconv/iconvconfig
+else
+iconvconfig-cmd = LC_ALL=C LANGUAGE=C \
+  $(common-objpfx)iconv/iconvconfig-native
+endif
+
 $(addprefix $(inst_gconvdir)/, $(modules.so)): \
     $(inst_gconvdir)/%: $(objpfx)% $(+force)
 	$(do-install-program)
 $(inst_gconvdir)/gconv-modules: gconv-modules $(+force)
 	$(do-install)
-ifeq (no,$(cross-compiling))
 # Update the $(prefix)/lib/gconv/gconv-modules.cache file. This is necessary
 # if this libc has more gconv modules than the previously installed one.
 	if test -f "$(inst_gconvdir)/gconv-modules.cache"; then \
-	   LC_ALL=C LANGUAGE=C \
-	   $(common-objpfx)elf/ld.so --library-path $(rpath-link) \
-	   $(common-objpfx)iconv/iconvconfig \
-	     $(addprefix --prefix=,$(install_root)); \
+	   $(iconvconfig-cmd) $(addprefix --prefix=,$(install_root)); \
 	fi
-else
-	@echo '*@*@*@ You should recreate $(inst_gconvdir)/gconv-modules.cache'
-endif
 
 endif # build-shared = yes
 

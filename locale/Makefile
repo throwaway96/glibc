@@ -44,6 +44,9 @@ categories	= ctype messages monetary numeric time paper name \
 aux		= $(categories:%=lc-%) $(categories:%=C-%) SYS_libc C_name \
 		  xlocale localename global-locale coll-lookup
 others		= localedef locale
+ifneq ($(cross-compiling),no)
+others-native	= localedef-native
+endif
 #others-static	= localedef locale
 install-bin	= localedef locale
 extra-objs	= $(localedef-modules:=.o) $(localedef-aux:=.o) \
@@ -80,6 +83,12 @@ $(objpfx)localedef: $(localedef-modules:%=$(objpfx)%.o)
 $(objpfx)localedef: $(localedef-aux:%=$(objpfx)%.o)
 $(objpfx)locale: $(locale-modules:%=$(objpfx)%.o)
 $(objpfx)localedef $(objpfx)locale: $(lib-modules:%=$(objpfx)%.o)
+
+ifneq ($(cross-compiling),no)
+$(objpfx)localedef-native: $(localedef-modules:%=$(objpfx)%-native.o)
+$(objpfx)localedef-native: $(localedef-aux:%=$(objpfx)%-native.o)
+$(objpfx)localedef-native: $(lib-modules:%=$(objpfx)%-native.o)
+endif
 
 C-translit.h: C-translit.h.in gen-translit.pl
 	$(PERL) gen-translit.pl < $< > $@.tmp

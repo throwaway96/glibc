@@ -293,6 +293,9 @@ endef
 object-suffixes-left := $(all-object-suffixes)
 include $(o-iterator)
 
+$(objpfx)%-native.o: %.c $(before-compile)
+	$(native-compile-command.c)
+
 # Omit the objpfx rules when building in the source tree, because
 # objpfx is empty and so these rules just override the ones above.
 ifdef objpfx
@@ -369,6 +372,8 @@ compile-command.S = $(compile.S) $(OUTPUT_OPTION) $(compile-mkdep-flags)
 compile-command.s = $(COMPILE.s) $< $(OUTPUT_OPTION) $(compile-mkdep-flags)
 compile-command.c = $(compile.c) $(OUTPUT_OPTION) $(compile-mkdep-flags)
 compile-command.cc = $(compile.cc) $(OUTPUT_OPTION) $(compile-mkdep-flags)
+# Native commands
+native-compile-command.c = $(native-compile.c) $(OUTPUT_OPTION) $(compile-mkdep-flags)
 
 # GCC can grok options after the file name, and it looks nicer that way.
 compile.c = $(CC) $< -c $(CFLAGS) $(CPPFLAGS)
@@ -378,6 +383,8 @@ compile.S = $(CC) $< -c $(CPPFLAGS) $(S-CPPFLAGS) \
 COMPILE.S = $(CC) -c $(CPPFLAGS) $(S-CPPFLAGS) \
 		  $(ASFLAGS) $(ASFLAGS-$(suffix $@))
 COMPILE.s = $(filter-out -pipe,$(CC)) -c $(ASFLAGS)
+# Native commands
+native-compile.c = $(BUILD_CC) -g $< -c $(CFLAGS-native) $(CPPFLAGS-native)
 
 # We need this for the output to go in the right place.  It will default to
 # empty if make was configured to work with a cc that can't grok -c and -o
@@ -1171,7 +1178,7 @@ define native-compile
 $(make-target-directory)
 $(patsubst %/,cd % &&,$(objpfx)) \
 $(BUILD_CC) $($(basename $(<F))-CFLAGS) $(ALL_BUILD_CFLAGS) \
-	    $(firstword $(filter /%,$< $(shell pwd)/$<)) -o $(@F)
+	    $(addprefix $(shell pwd)/, $^) -o $(@F)
 endef
 
 # Command to compile $< in $(common-objdir) using the native libraries.

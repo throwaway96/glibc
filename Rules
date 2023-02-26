@@ -87,7 +87,7 @@ common-generated += dummy.o dummy.c
 
 .PHONY: others tests
 ifeq ($(build-programs),yes)
-others: $(addprefix $(objpfx),$(others) $(sysdep-others) $(extra-objs))
+others: $(addprefix $(objpfx),$(others) $(others-native) $(sysdep-others) $(extra-objs))
 else
 others: $(addprefix $(objpfx),$(extra-objs))
 endif
@@ -106,9 +106,11 @@ endif
 ifeq ($(build-programs),yes)
 binaries-all = $(others) $(sysdep-others) $(tests) $(xtests) $(test-srcs)
 binaries-static = $(others-static) $(tests-static) $(xtests-static)
+binaries-native = $(others-native)
 else
 binaries-all = $(tests) $(xtests) $(test-srcs)
 binaries-static =
+binaries-native =
 endif
 
 binaries-shared = $(filter-out $(binaries-static), $(binaries-all))
@@ -125,6 +127,11 @@ $(addprefix $(objpfx),$(binaries-static)): %: %.o \
   $(sort $(filter $(common-objpfx)lib%,$(link-libc-static))) \
   $(addprefix $(csu-objpfx),start.o) $(+preinit) $(+postinit)
 	$(+link-static)
+endif
+
+ifneq "$(strip $(binaries-native))" ""
+$(addprefix $(objpfx),$(binaries-native)): %: %.o
+	$(+link-native)
 endif
 
 ifeq ($(build-bounded),yes)
