@@ -49,6 +49,9 @@ typedef __CHAR32_TYPE__ char32_t;
 
 __BEGIN_DECLS
 
+/* Available starting from glibc 2.16. If we're going to declare them,
+   we should provide a polyfill.  */
+#if 0
 /* Write char16_t representation of multibyte character pointed
    to by S to PC16.  */
 extern size_t mbrtoc16 (char16_t *__restrict __pc16,
@@ -70,6 +73,7 @@ extern size_t mbrtoc32 (char32_t *__restrict __pc32,
 /* Write multibyte representation of char32_t C32 to S.  */
 extern size_t c32rtomb (char *__restrict __s, char32_t __c32,
 			mbstate_t *__restrict __ps) __THROW;
+#endif
 
 __END_DECLS
 
