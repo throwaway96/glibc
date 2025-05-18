@@ -8302,9 +8302,9 @@ then :
   printf %s "(cached) " >&6
 else case e in #(
   e) cat > conftest.c <<\EOF
-_start () {}
+void _start () {}
 int __eh_pc;
-__throw () {}
+void __throw () {}
 EOF
 if { ac_try='${CC-cc} $CFLAGS $CPPFLAGS $LDFLAGS
 			    -nostdlib -nostartfiles -Wl,--no-whole-archive
