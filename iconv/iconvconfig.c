@@ -35,6 +35,7 @@
 #include <unistd.h>
 #include <sys/cdefs.h>
 #include <sys/uio.h>
+#include <sys/stat.h>
 
 #include "iconvconfig.h"
 

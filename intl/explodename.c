@@ -78,7 +78,7 @@ _nl_explode_name (name, language, modifier, territory, codeset,
   if (*language == cp)
     /* This does not make sense: language has to be specified.  Use
        this entry as it is without exploding.  Perhaps it is an alias.  */
-    cp = __rawmemchr (*language, '\0');
+    cp = rawmemchr (*language, '\0');
   else if (cp[0] != '@')
     {
       if (cp[0] == '_')
