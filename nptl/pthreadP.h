@@ -23,6 +23,7 @@
 #include <pthread.h>
 #include <setjmp.h>
 #include <stdbool.h>
+#include <string.h>
 #include <sys/syscall.h>
 #include "descr.h"
 #include <tls.h>
