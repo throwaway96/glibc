@@ -1947,9 +1947,9 @@ fi
 
 AC_CACHE_CHECK(for ld --no-whole-archive, libc_cv_ld_no_whole_archive, [dnl
 cat > conftest.c <<\EOF
-_start () {}
+void _start () {}
 int __eh_pc;
-__throw () {}
+void __throw () {}
 EOF
 dnl No \ in command here because it ends up inside ''.
 if AC_TRY_COMMAND([${CC-cc} $CFLAGS $CPPFLAGS $LDFLAGS
