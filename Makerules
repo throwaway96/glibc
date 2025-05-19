@@ -1344,7 +1344,7 @@ $(stdio_lim:h=st): $(..)stdio-common/stdio_lim.h.in $(..)Rules \
 	$(move-if-change) $(@:st=h.new) $(@:st=h)
 # Remove these last so that they can be examined if something went wrong.
 	rm -f $(@:st=hT) $(@:st=dT) $(@:st=dt)
-	touch $@
+	touch $@ $(@:st=h) $(@:st=d)
 # Get dependencies.
 ifndef no_deps
 -include $(stdio_lim:h=d)
