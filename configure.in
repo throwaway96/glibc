@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_REVISION([$CVSid$])
-AC_PREREQ(2.53)dnl		dnl Minimum Autoconf version required.
-AC_INIT([GNU C Library], [(see version.h)], [glibc])
+AC_PREREQ([2.72])dnl             dnl Minimum Autoconf version required.
+AC_INIT([GNU C Library],[(see version.h)],[glibc])
 AC_CONFIG_SRCDIR([include/features.h])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR([scripts])
@@ -29,7 +29,7 @@ config_vars=
 
 # Check for a --with-gd argument and set libgd-LDFLAGS in config.make.
 AC_ARG_WITH([gd],
-            AC_HELP_STRING([--with-gd=DIR],
+            AS_HELP_STRING([--with-gd=DIR],
                            [find libgd include dir and library with prefix DIR]),
 	    [dnl
 case "$with_gd" in
@@ -39,7 +39,7 @@ yes|''|no) ;;
 esac
 ])
 AC_ARG_WITH([gd-include],
-            AC_HELP_STRING([--with-gd-include=DIR],
+            AS_HELP_STRING([--with-gd-include=DIR],
                            [find libgd include files in DIR]),
             [dnl
 case "$with_gd_include" in
@@ -48,7 +48,7 @@ case "$with_gd_include" in
 esac
 ])
 AC_ARG_WITH([gd-lib],
-            AC_HELP_STRING([--with-gd-lib=DIR],
+            AS_HELP_STRING([--with-gd-lib=DIR],
                            [find libgd library files in DIR]),
             [dnl
 case "$with_gd_lib" in
@@ -68,33 +68,33 @@ fi
 
 dnl Arguments to specify presence of other packages/features.
 AC_ARG_WITH([fp],
-            AC_HELP_STRING([--with-fp],
+            AS_HELP_STRING([--with-fp],
                            [if using floating-point hardware @<:@default=yes@:>@]),
 	    [with_fp=$withval],
 	    [with_fp=yes])
 AC_SUBST(with_fp)
 AC_ARG_WITH([binutils],
-            AC_HELP_STRING([--with-binutils=PATH],
+            AS_HELP_STRING([--with-binutils=PATH],
                            [specify location of binutils (as and ld)]),
 	    [path_binutils=$withval],
 	    [path_binutils=''])
 AC_ARG_WITH([elf],
-            AC_HELP_STRING([--with-elf],
+            AS_HELP_STRING([--with-elf],
                            [if using the ELF object format]),
 	    [elf=$withval],
 	    [elf=no])
 AC_ARG_WITH([selinux],
-            AC_HELP_STRING([--with-selinux],
+            AS_HELP_STRING([--with-selinux],
                            [if building with SELinux support]),
 	    [with_selinux=$withval],
 	    [with_selinux=auto])
 AC_ARG_WITH([xcoff],
-            AC_HELP_STRING([--with-xcoff],
+            AS_HELP_STRING([--with-xcoff],
                            [if using the XCOFF object format]),
 	    [xcoff=$withval],
 	    [xcoff=no])
 AC_ARG_WITH([cvs],
-            AC_HELP_STRING([--without-cvs],
+            AS_HELP_STRING([--without-cvs],
                            [if CVS should not be used]),
 	    [with_cvs=$withval],
 	    [with_cvs=yes])
@@ -107,24 +107,24 @@ fi
 AC_SUBST(with_cvs)
 
 AC_ARG_WITH([headers],
-            AC_HELP_STRING([--with-headers=PATH],
-	                   [location of system headers to use
+            AS_HELP_STRING([--with-headers=PATH],
+                           [location of system headers to use
 			    (for example /usr/src/linux/include)
 			    @<:@default=compiler default@:>@]),
 	    [sysheaders=$withval],
 	    [sysheaders=''])
 
 AC_ARG_ENABLE([sanity-checks],
-              AC_HELP_STRING([--disable-sanity-checks],
+              AS_HELP_STRING([--disable-sanity-checks],
                              [really do not use threads (should not be used except in special situations) @<:@default=yes@:>@]),
 	      [enable_sanity=$enableval],
 	      [enable_sanity=yes])
 
 AC_SUBST(enable_check_abi)
 AC_ARG_ENABLE([check-abi],
-	      AC_HELP_STRING([--enable-check-abi],
-			     [do "make check-abi" in "make check" (no/warn/yes)
-			      @<:@default=no@:>@]),
+             AS_HELP_STRING([--enable-check-abi],
+                            [do "make check-abi" in "make check" (no/warn/yes)
+                             @<:@default=no@:>@]),
 	      [enable_check_abi=$enableval],
 	      [enable_check_abi=no])
 
@@ -133,39 +133,39 @@ dnl and -fomit-frame-pointer libraries.
 dnl I've disabled this for now since we cannot build glibc without static
 dnl libraries built in the moment.
 dnl AC_ARG_ENABLE([static],
-dnl               AC_HELP_STRING([--enable-static],
+dnl               AS_HELP_STRING([--enable-static],
 dnl                              [build static library @<:@default=yes@:>@]),
 dnl               [static=$enableval],
 dnl               [static=yes])
 static=yes
 AC_ARG_ENABLE([shared],
-              AC_HELP_STRING([--enable-shared],
+              AS_HELP_STRING([--enable-shared],
                              [build shared library @<:@default=yes if GNU ld & ELF@:>@]),
 	      [shared=$enableval],
 	      [shared=default])
 AC_ARG_ENABLE([profile],
-              AC_HELP_STRING([--enable-profile],
+              AS_HELP_STRING([--enable-profile],
                              [build profiled library @<:@default=no@:>@]),
 	      [profile=$enableval],
 	      [profile=no])
 AC_ARG_ENABLE([omitfp],
-              AC_HELP_STRING([--enable-omitfp],
+              AS_HELP_STRING([--enable-omitfp],
                              [build undebuggable optimized library @<:@default=no@:>@]),
 	      [omitfp=$enableval],
 	      [omitfp=no])
 AC_ARG_ENABLE([bounded],
-              AC_HELP_STRING([--enable-bounded],
+              AS_HELP_STRING([--enable-bounded],
                              [build with runtime bounds checking @<:@default=no@:>@]),
 	      [bounded=$enableval],
 	      [bounded=no])
 AC_ARG_ENABLE([versioning],
-              AC_HELP_STRING([--disable-versioning],
+              AS_HELP_STRING([--disable-versioning],
                              [do not include versioning information in the library objects @<:@default=yes if supported@:>@]),
 	      [enable_versioning=$enableval],
 	      [enable_versioning=yes])
 
 AC_ARG_ENABLE([oldest-abi],
-              AC_HELP_STRING([--enable-oldest-abi=ABI],
+              AS_HELP_STRING([--enable-oldest-abi=ABI],
                              [configure the oldest ABI supported @<:@e.g. 2.2@:>@ @<:@default=glibc default@:>@]),
 	      [oldest_abi=$enableval],
 	      [oldest_abi=no])
@@ -177,8 +177,8 @@ fi
 AC_SUBST(oldest_abi)
 
 AC_ARG_ENABLE([stackguard-randomization],
-	      AC_HELP_STRING([--enable-stackguard-randomization],
-			     [initialize __stack_chk_guard canary with a random number at program start]),
+             AS_HELP_STRING([--enable-stackguard-randomization],
+                            [initialize __stack_chk_guard canary with a random number at program start]),
 	      [enable_stackguard_randomize=$enableval],
 	      [enable_stackguard_randomize=no])
 if test "$enable_stackguard_randomize" = yes; then
@@ -187,26 +187,26 @@ fi
 
 dnl Generic infrastructure for drop-in additions to libc.
 AC_ARG_ENABLE([add-ons],
-              AC_HELP_STRING([--enable-add-ons@<:@=DIRS...@:>@],
+              AS_HELP_STRING([--enable-add-ons@<:@=DIRS...@:>@],
                              [configure and build add-ons in DIR1,DIR2,...
                               search for add-ons if no parameter given]),
 			     , [enable_add_ons=yes])
 
 dnl Let the user avoid using TLS.  Don't know why but...
 AC_ARG_WITH([tls],
-            AC_HELP_STRING([--with-tls],
+            AS_HELP_STRING([--with-tls],
                            [enable support for TLS]),
 	    [usetls=$withval],
 	    [usetls=yes])
 
 AC_ARG_WITH([__thread],
-            AC_HELP_STRING([--without-__thread],
+            AS_HELP_STRING([--without-__thread],
                            [do not use TLS features even when supporting them]),
 	    [use__thread=$withval],
 	    [use__thread=yes])
 
 AC_ARG_ENABLE([hidden-plt],
-              AC_HELP_STRING([--disable-hidden-plt],
+              AS_HELP_STRING([--disable-hidden-plt],
                              [do not hide internal function calls to avoid PLT]),
 	      [hidden=$enableval],
 	      [hidden=yes])
@@ -215,8 +215,8 @@ if test "x$hidden" = xno; then
 fi
 
 AC_ARG_ENABLE([bind-now],
-	      AC_HELP_STRING([--enable-bind-now],
-			     [disable lazy relocations in DSOs]),
+	      AS_HELP_STRING([--enable-bind-now],
+                         [disable lazy relocations in DSOs]),
 	      [bindnow=$enableval],
 	      [bindnow=no])
 AC_SUBST(bindnow)
@@ -224,7 +224,7 @@ AC_SUBST(bindnow)
 dnl On some platforms we cannot use dynamic loading.  We must provide
 dnl static NSS modules.
 AC_ARG_ENABLE([static-nss],
-              AC_HELP_STRING([--enable-static-nss],
+              AS_HELP_STRING([--enable-static-nss],
                              [build static NSS modules @<:@default=no@:>@]),
 	      [static_nss=$enableval],
 	      [static_nss=no])
@@ -235,7 +235,7 @@ if test x"$static_nss" = xyes || test x"$shared" = xno; then
 fi
 
 AC_ARG_ENABLE([force-install],
-              AC_HELP_STRING([--disable-force-install],
+              AS_HELP_STRING([--disable-force-install],
                              [don't force installation of files from this package, even if they are older than the installed files]),
 	      [force_install=$enableval],
 	      [force_install=yes])
@@ -244,7 +244,7 @@ AC_SUBST(force_install)
 dnl On some platforms we allow dropping compatibility with all kernel
 dnl versions.
 AC_ARG_ENABLE([kernel],
-              AC_HELP_STRING([--enable-kernel=VERSION],
+              AS_HELP_STRING([--enable-kernel=VERSION],
                              [compile for compatibility with kernel not older than VERSION]),
 	      [minimum_kernel=$enableval],
 	      [])
@@ -262,28 +262,28 @@ dnl For the development we sometimes want gcc to issue even more warnings.
 dnl This is not the default since many of the extra warnings are not
 dnl appropriate.
 AC_ARG_ENABLE([all-warnings],
-	      AC_HELP_STRING([--enable-all-warnings],
-                             [enable all useful warnings gcc can issue]),
+	      AS_HELP_STRING([--enable-all-warnings],
+                         [enable all useful warnings gcc can issue]),
 	      [all_warnings=$enableval],
 	      [])
 AC_SUBST(all_warnings)
 
 AC_ARG_ENABLE([multi-arch],
-	      AC_HELP_STRING([--enable-multi-arch],
-			     [enable single DSO with optimizations for multiple architectures]),
+	      AS_HELP_STRING([--enable-multi-arch],
+                         [enable single DSO with optimizations for multiple architectures]),
 	      [multi_arch=$enableval],
 	      [multi_arch=default])
 
 AC_ARG_ENABLE([experimental-malloc],
-	      AC_HELP_STRING([--enable-experimental-malloc],
-			     [enable experimental malloc features]),
+	      AS_HELP_STRING([--enable-experimental-malloc],
+                         [enable experimental malloc features]),
 	      [experimental_malloc=$enableval],
 	      [])
 AC_SUBST(experimental_malloc)
 
 AC_ARG_ENABLE([nss-crypt],
-	      AC_HELP_STRING([--enable-nss-crypt],
-			     [enable libcrypt to use nss]),
+	      AS_HELP_STRING([--enable-nss-crypt],
+                         [enable libcrypt to use nss]),
 	      [nss_crypt=$enableval],
 	      [nss_crypt=no])
 if test x$nss_crypt = xyes; then
@@ -293,10 +293,10 @@ if test x$nss_crypt = xyes; then
   fi
   old_CFLAGS="$CFLAGS"
   CFLAGS="$CFLAGS $nss_includes"
-  AC_COMPILE_IFELSE([typedef int PRBool;
+  AC_COMPILE_IFELSE([AC_LANG_SOURCE([typedef int PRBool;
 #include <hasht.h>
 #include <nsslowhash.h>
-void f (void) { NSSLOW_Init (); }],
+void f (void) { NSSLOW_Init (); }])],
 	     libc_cv_nss_crypt=yes,
 	     AC_MSG_ERROR([
 cannot find NSS headers with lowlevel hash function interfaces]))
@@ -1024,7 +1024,7 @@ if test "$PWD_P" = no; then
 fi
 
 # These programs are version sensitive.
-AC_CHECK_TOOL_PREFIX
+
 AC_CHECK_PROG_VER(CC, ${ac_tool_prefix}gcc ${ac_tool_prefix}cc, -v,
   [version \([egcygnustpi-]*[0-9.]*\)], [3.4* | 4.[0-9]* | [5-9].* | [1-9][0-9]* ],
   critic_missing="$critic_missing gcc")
@@ -1204,18 +1204,18 @@ EOF
 fi
 
 AC_CACHE_CHECK(for libc-friendly stddef.h, libc_cv_friendly_stddef, [dnl
-AC_TRY_COMPILE(dnl
-[#define __need_size_t
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM(dnl
+[[#define __need_size_t
 #define __need_wchar_t
 #include <stddef.h>
 #define __need_NULL
-#include <stddef.h>], [size_t size; wchar_t wchar;
+#include <stddef.h>]], [[size_t size; wchar_t wchar;
 #ifdef offsetof
 #error stddef.h ignored __need_*
 #endif
-if (&size == NULL || &wchar == NULL) abort ();],
-               libc_cv_friendly_stddef=yes,
-               libc_cv_friendly_stddef=no)])
+if (&size == NULL || &wchar == NULL) abort ();]])],
+                  libc_cv_friendly_stddef=yes,
+                  libc_cv_friendly_stddef=no)])
 if test $libc_cv_friendly_stddef = yes; then
   config_vars="$config_vars
 override stddef.h = # The installed <stddef.h> seems to be libc-friendly."
@@ -1795,11 +1795,11 @@ AC_SUBST(gnu89_inline)
 
 if test $elf != yes; then
   AC_CACHE_CHECK(for .init and .fini sections, libc_cv_have_initfini,
-		 [AC_TRY_COMPILE(, [asm (".section .init");
+		 [AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[asm (".section .init");
 				    asm (".section .fini");
-				    asm ("${libc_cv_dot_text}");],
-				 libc_cv_have_initfini=yes,
-				 libc_cv_have_initfini=no)])
+				    asm ("${libc_cv_dot_text}");]])],
+                    libc_cv_have_initfini=yes,
+                    libc_cv_have_initfini=no)])
   AC_SUBST(libc_cv_have_initfini)dnl
   if test $libc_cv_have_initfini = yes; then
     AC_DEFINE(HAVE_INITFINI)
@@ -1860,9 +1860,9 @@ if test $elf = yes; then
 else
   if test $ac_cv_prog_cc_works = yes; then
     AC_CACHE_CHECK(for _ prefix on C symbol names, libc_cv_asm_underscores,
-		   [AC_TRY_LINK([asm ("_glibc_foobar:");], [glibc_foobar ();],
-			        libc_cv_asm_underscores=yes,
-			        libc_cv_asm_underscores=no)])
+		   [AC_LINK_IFELSE([AC_LANG_PROGRAM([[asm ("_glibc_foobar:");]], [[glibc_foobar ();]])],
+                          libc_cv_asm_underscores=yes,
+                          libc_cv_asm_underscores=no)])
   else
     AC_CACHE_CHECK(for _ prefix on C symbol names, libc_cv_asm_underscores,
 		   [AC_CHECK_ASM_UNDERSCORE(libc_cv_asm_underscores=yes,
@@ -1989,9 +1989,9 @@ if test "$host_cpu" = powerpc ; then
 # Check for a bug present in at least versions 2.8.x of GCC
 # and versions 1.0.x of EGCS.
 AC_CACHE_CHECK(whether clobbering cr0 causes problems,libc_cv_c_asmcr0_bug,[dnl
-AC_TRY_COMPILE([int tester(int x) { asm ("" : : : "cc"); return x & 123; }],,
-	       libc_cv_c_asmcr0_bug='no',
-	       libc_cv_c_asmcr0_bug='yes')])
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[int tester(int x) { asm ("" : : : "cc"); return x & 123; }]], [[]])],
+                  [libc_cv_c_asmcr0_bug='no'],
+                  [libc_cv_c_asmcr0_bug='yes'])])
 if test "$libc_cv_c_asmcr0_bug" != 'no'; then
   AC_DEFINE(BROKEN_PPC_ASM_CR0)
 fi
@@ -2119,7 +2119,7 @@ if test "$with_gd" != "no"; then
   LDFLAGS="$LDFLAGS $libgd_ldflags"
   old_LIBS="$LIBS"
   LIBS="$LIBS -lgd -lpng -lz -lm"
-  AC_TRY_LINK([#include <gd.h>], [gdImagePng (0, 0)], LIBGD=yes, LIBGD=no)
+  AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <gd.h>]], [[gdImagePng (0, 0)]])], LIBGD=yes, LIBGD=no)
   CFLAGS="$old_CFLAGS"
   LDFLAGS="$old_LDFLAGS"
   LIBS="$old_LIBS"
@@ -2139,13 +2139,13 @@ else
   # See if we have the SELinux header with the NSCD permissions in it.
   if test x$have_selinux = xyes ; then
     AC_MSG_CHECKING([for NSCD Flask permissions in selinux/av_permissions.h])
-    AC_TRY_COMPILE([#include <selinux/av_permissions.h>],
-		    [#ifdef NSCD__SHMEMHOST
+    AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <selinux/av_permissions.h>]],
+                      [[#ifdef NSCD__SHMEMHOST
 		     return 0;
 		     #else
 		     #error NSCD__SHMEMHOST not defined
-		     #endif],
-		    have_selinux=yes, have_selinux=no)
+		     #endif]])],
+             [have_selinux=yes],[have_selinux=no])
     AC_MSG_RESULT($have_selinux)
   fi
 
